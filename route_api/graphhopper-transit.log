@@ -1,0 +1,87 @@
+agencies: 1
+stops: 217625
+routes: 26797
+trips: 326932
+stop_times: 18923658
+calendar_records: 1
+exception_records: 0
+timezones: ['Asia/Seoul']
+observed_start_date: 20170101
+observed_end_date: 20301231
+saturday_calendar_services: 1
+sunday_calendar_services: 1
+warning: Check that requested dates and weekend service really exist; pilot feed may be weekday-only.
+Starting GraphHopper mode=pt with graphhopper/config.yml...
+Do NOT assume transit works on requested dates without checking GTFS calendar.
+INFO  [2026-11-08 16:48:35,591] io.dropwizard.core.server.DefaultServerFactory: Registering jersey handler with root path prefix: /
+INFO  [2026-11-08 16:48:35,593] io.dropwizard.core.server.DefaultServerFactory: Registering admin handler with root path prefix: /
+INFO  [2026-11-08 16:48:35,757] io.dropwizard.assets.AssetsBundle: Registering AssetBundle with name: assets for path /maps/*
+INFO  [2026-11-08 16:48:35,759] io.dropwizard.assets.AssetsBundle: Registering AssetBundle with name: webjars for path /webjars/*
+INFO  [2026-11-08 16:48:35,763] io.dropwizard.core.server.ServerFactory: Starting GraphHopperApplication
+                        _     _
+   __ _ _ __ __ _ _ __ | |__ | |__   ___  _ __  _ __   ___ _ __
+  / _` | '__/ _` | '_ \| '_ \| '_ \ / _ \| '_ \| '_ \ / _ \ '__|
+ | (_| | | | (_| | |_) | | | | | | | (_) | |_) | |_) |  __/ |
+  \__, |_|  \__,_| .__/|_| |_|_| |_|\___/| .__/| .__/ \___|_|
+  |___/          |_|                     |_|   |_|
+INFO  [2026-11-08 16:48:35,868] org.eclipse.jetty.setuid.SetUIDListener: Opened application@2cc04358{HTTP/1.1, (http/1.1)}{127.0.0.1:8989}
+INFO  [2026-11-08 16:48:35,868] org.eclipse.jetty.setuid.SetUIDListener: Opened admin@68b58644{HTTP/1.1, (http/1.1)}{127.0.0.1:8990}
+INFO  [2026-11-08 16:48:35,869] org.eclipse.jetty.server.Server: jetty-11.0.26; built: 2025-08-14T18:03:14.457Z; git: 7559873b6e46eea7c2c6da2b58327ea2ecf941f4; jvm 21.0.10-internal-adhoc.rattler.src
+INFO  [2026-11-08 16:48:35,884] com.graphhopper.GraphHopper: version 11.0|2025-10-14T14:28:00Z (9,24,7,5,2,9)
+INFO  [2026-11-08 16:48:36,166] com.graphhopper.GraphHopper: No custom areas are used, custom_areas.directory not given
+INFO  [2026-11-08 16:48:36,177] com.graphhopper.GraphHopper: No country rules available
+INFO  [2026-11-08 16:48:36,177] com.graphhopper.GraphHopper: start creating graph from data/engine/busan.osm.pbf
+INFO  [2026-11-08 16:48:36,221] com.graphhopper.GraphHopper: using foot|RAM_STORE|2D|no_turn_cost|nodes:9,edges:24,geometry:7,location_index:5,string_index:2,nodesCH:0,shortcuts:9, memory:totalMB:68, usedMB:17
+INFO  [2026-11-08 16:48:36,232] com.graphhopper.reader.osm.WaySegmentParser: Start reading OSM file: 'data/engine/busan.osm.pbf'
+INFO  [2026-11-08 16:48:36,232] com.graphhopper.reader.osm.WaySegmentParser: pass1 - start
+INFO  [2026-11-08 16:48:37,134] com.graphhopper.reader.osm.WaySegmentParser: pass1 - start reading OSM ways
+INFO  [2026-11-08 16:48:37,658] com.graphhopper.reader.osm.WaySegmentParser: pass1 - start reading OSM relations
+INFO  [2026-11-08 16:48:37,688] com.graphhopper.reader.osm.WaySegmentParser: pass1 - finished, processed ways: 228,586, accepted ways: 104,024, way nodes: 820,292, relations: 3,364, totalMB:1060, usedMB:312
+INFO  [2026-11-08 16:48:37,688] com.graphhopper.reader.osm.WaySegmentParser: pass1 - finished, took: 1.46s
+INFO  [2026-11-08 16:48:37,690] com.graphhopper.reader.osm.WaySegmentParser: Creating graph. Node count (pillar+tower): 820292, totalMB:1060, usedMB:312
+INFO  [2026-11-08 16:48:37,690] com.graphhopper.reader.osm.WaySegmentParser: pass2 - start
+INFO  [2026-11-08 16:48:37,702] com.graphhopper.reader.osm.WaySegmentParser: pass2 - start reading OSM nodes
+INFO  [2026-11-08 16:48:38,287] com.graphhopper.reader.osm.WaySegmentParser: pass2 - start reading OSM ways
+INFO  [2026-11-08 16:48:40,515] com.graphhopper.reader.osm.WaySegmentParser: pass2 - start reading OSM relations
+INFO  [2026-11-08 16:48:40,518] com.graphhopper.reader.osm.WaySegmentParser: pass2 - finished, processed ways: 228,586, way nodes: 820,292, nodes with tags: 6,990, node tag capacity: 1,056,768, ignored barriers at junctions: 13
+INFO  [2026-11-08 16:48:40,518] com.graphhopper.reader.osm.WaySegmentParser: pass2 - finished, took: 2.83s
+INFO  [2026-11-08 16:48:40,521] com.graphhopper.reader.osm.WaySegmentParser: Finished reading OSM file. pass1: 1s,  pass2: 2s,  total: 4s
+INFO  [2026-11-08 16:48:40,521] com.graphhopper.reader.osm.OSMReader: Finished reading OSM file: /home/doojinyang/workspace/busan_tripedit_route_api/data/engine/busan.osm.pbf, nodes: 167,254, edges: 227,080, zero distance edges: 704
+INFO  [2026-11-08 16:48:40,522] com.graphhopper.GraphHopper: sorting graph along Hilbert curve...
+INFO  [2026-11-08 16:48:40,693] com.graphhopper.GraphHopper: calculating sort order took: 170.72ms
+INFO  [2026-11-08 16:48:40,713] com.graphhopper.GraphHopper: sort graph for fixed ordering...
+INFO  [2026-11-08 16:48:40,817] com.graphhopper.GraphHopper: sorting 227,080 edges took: 102.37ms
+INFO  [2026-11-08 16:48:40,848] com.graphhopper.GraphHopper: sorting 167,254 nodes took: 31.05ms
+INFO  [2026-11-08 16:48:40,860] com.graphhopper.routing.subnetwork.PrepareRoutingSubnetworks: Start marking subnetworks, prepare.min_network_size: 200, threads: 1, nodes: 167,254, edges: 227,080, jobs: [foot_subnetwork|com.graphhopper.routing.weighting.custom.CustomWeighting@254449bb], totalMB:1788, usedMB:622
+INFO  [2026-11-08 16:48:41,301] com.graphhopper.routing.subnetwork.PrepareRoutingSubnetworks: foot - Found 11272 subnetworks (10718 single edges and 554 components with more than one edge, total nodes: 454160), took: 0.4144647s
+INFO  [2026-11-08 16:48:41,315] com.graphhopper.routing.subnetwork.PrepareRoutingSubnetworks: foot - Marked 11270 subnetworks (biggest: 234 edges) -> 2 components(s) remain (smallest: 18404, biggest: 420298 edges), total marked edges: 2370, took: 0.008760951s
+INFO  [2026-11-08 16:48:41,348] com.graphhopper.routing.subnetwork.PrepareRoutingSubnetworks: Finished finding and marking subnetworks for 1 jobs, took: 0.48982695s, totalMB:1788, usedMB:656
+INFO  [2026-11-08 16:48:41,349] com.graphhopper.GraphHopper: nodes: 167,254, edges: 227,080
+java.io.IOError: java.io.IOException: Wrong index checksum, store was not closed properly and could be corrupted.
+	at org.mapdb.StoreDirect.checkHeaders(StoreDirect.java:269)
+	at org.mapdb.StoreDirect.<init>(StoreDirect.java:207)
+	at org.mapdb.DBMaker.extendStoreDirect(DBMaker.java:971)
+	at org.mapdb.DBMaker.makeEngine(DBMaker.java:758)
+	at org.mapdb.DBMaker.make(DBMaker.java:701)
+	at com.graphhopper.gtfs.GtfsStorage.loadExisting(GtfsStorage.java:188)
+	at com.graphhopper.gtfs.GraphHopperGtfs.importPublicTransit(GraphHopperGtfs.java:75)
+	at com.graphhopper.GraphHopper.postProcessing(GraphHopper.java:1280)
+	at com.graphhopper.GraphHopper.process(GraphHopper.java:852)
+	at com.graphhopper.GraphHopper.importOrLoad(GraphHopper.java:796)
+	at com.graphhopper.http.GraphHopperManaged.start(GraphHopperManaged.java:44)
+	at io.dropwizard.lifecycle.JettyManaged.doStart(JettyManaged.java:27)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:93)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.start(ContainerLifeCycle.java:171)
+	at org.eclipse.jetty.server.Server.start(Server.java:470)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStart(ContainerLifeCycle.java:121)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStart(AbstractHandler.java:89)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:415)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:93)
+	at io.dropwizard.core.cli.ServerCommand.run(ServerCommand.java:52)
+	at io.dropwizard.core.cli.EnvironmentCommand.run(EnvironmentCommand.java:67)
+	at io.dropwizard.core.cli.ConfiguredCommand.run(ConfiguredCommand.java:98)
+	at io.dropwizard.core.cli.Cli.run(Cli.java:78)
+	at io.dropwizard.core.Application.run(Application.java:94)
+	at com.graphhopper.application.GraphHopperApplication.main(GraphHopperApplication.java:37)
+Caused by: java.io.IOException: Wrong index checksum, store was not closed properly and could be corrupted.
+	... 25 more

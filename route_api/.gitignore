@@ -1,0 +1,12 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.third_party/
+third_party/
+data/engine/*.osm.pbf
+data/engine/*.zip
+data/engine/graph-cache*/
+data/*.sqlite3*
+data/matrix*.csv
+data/coordinate_report.json

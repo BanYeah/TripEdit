@@ -1,0 +1,14 @@
+INFO:     Started server process [3924632]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:59900 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59916 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59928 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47352 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47368 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47378 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47392 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35110 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35114 - "GET /travel-time?from_id=2134126337&to_id=26772618&mode=WALK&refresh=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35118 - "GET /travel-time?from_id=2134126337&to_id=26772618&mode=TRANSIT&refresh=true&departure=2026-11-10T12%3A00%3A00%2B09%3A00 HTTP/1.1" 200 OK
