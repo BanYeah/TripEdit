@@ -1,0 +1,21 @@
+graphhopper:
+  datareader.file: ../dataset/osm/korea.osm.pbf
+  gtfs.file: data/korea-gtfs.zip
+  graph.location: data/graph
+  graph.dataaccess.default_type: MMAP
+  profiles:
+    - name: foot
+      custom_model_files: [foot.json]
+  import.osm.ignored_highways: motorway,trunk
+  graph.encoded_values: foot_access, foot_average_speed, hike_rating, foot_priority, mtb_rating
+server:
+  application_connectors:
+    - type: http
+      port: 8989
+      bind_host: 127.0.0.1
+  admin_connectors:
+    - type: http
+      port: 8990
+      bind_host: 127.0.0.1
+logging:
+  level: INFO

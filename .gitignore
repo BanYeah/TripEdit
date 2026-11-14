@@ -5,6 +5,7 @@ __pycache__/
 
 /dataset/*.csv
 /dataset/gtfs
+/dataset/osm
 
 .env
 *.sqlite3
