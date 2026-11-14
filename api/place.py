@@ -23,7 +23,7 @@ class PlaceLocation(BaseModel):
     latitude: float = Field(ge=-90, le=90, allow_inf_nan=False, examples=[37.240778])
 
 
-class PlaceSummary(BaseModel):
+class Place(BaseModel):
     place_id: int
     name: str
     category: Literal["transport", "accommodation", "attraction", "restaurant", "cafe"]
@@ -64,10 +64,10 @@ PlaceInfo = Annotated[
 ]
 
 
-@router.get("/search", response_model=list[PlaceSummary])
+@router.get("/search", response_model=list[Place])
 def search_places(
     name: Annotated[str, Query(min_length=1, pattern=r"\S", description="Place name")],
-) -> list[PlaceSummary]:
+) -> list[Place]:
     """Find places whose names contain the given text."""
     results = []
     keyword = name.strip().casefold()
@@ -75,7 +75,7 @@ def search_places(
         with (DATASET_DIR / filename).open(encoding="utf-8-sig", newline="") as file:
             for row in csv.DictReader(file):
                 if keyword in row["name"].casefold():
-                    results.append(PlaceSummary(
+                    results.append(Place(
                         place_id=int(row["place_id"]),
                         name=row["name"],
                         category=row["category"],
