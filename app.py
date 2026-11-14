@@ -1,8 +1,17 @@
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 
 from api import router
+from database import init_database
 
-app = FastAPI(title="TripEdit API")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_database()
+    yield
+
+
+app = FastAPI(title="TripEdit API", version="1.0.0", lifespan=lifespan)
 app.include_router(router)
 
 if __name__ == "__main__":

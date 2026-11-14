@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from . import items, place
+from . import itinerary, place
 
 router = APIRouter()
 router.include_router(place.router)
-router.include_router(items.router)
+router.include_router(itinerary.router)

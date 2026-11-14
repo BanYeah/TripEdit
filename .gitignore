@@ -2,7 +2,9 @@ __pycache__/
 *.py[cod]
 
 .vscode/
-.env
 
 /dataset/*.csv
 /dataset/gtfs
+
+.env
+*.sqlite3

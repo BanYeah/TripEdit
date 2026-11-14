@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import Annotated, Literal
 
-from fastapi import APIRouter, HTTPException, Path as PathParam, Query
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 router = APIRouter(prefix="/place", tags=["place"])
@@ -66,7 +66,7 @@ PlaceInfo = Annotated[
 
 @router.get("/search", response_model=list[Place])
 def search_places(
-    name: Annotated[str, Query(min_length=1, pattern=r"\S", description="Place name")],
+    name: str,
 ) -> list[Place]:
     """Find places whose names contain the given text."""
     results = []
@@ -83,9 +83,22 @@ def search_places(
     return results
 
 
+def find_place(place_id: int) -> Place:
+    for filename in PLACE_FILES:
+        with (DATASET_DIR / filename).open(encoding="utf-8-sig", newline="") as file:
+            for row in csv.DictReader(file):
+                if int(row["place_id"]) == place_id:
+                    return Place(
+                        place_id=int(row["place_id"]),
+                        name=row["name"],
+                        category=row["category"],
+                    )
+    raise HTTPException(status_code=404, detail="Place not found for the provided ID.")
+
+
 @router.get("/{place_id}/information", response_model=PlaceInfo, summary="Get Place Information")
 def get_place_info(
-    place_id: Annotated[int, PathParam(description="Place ID")],
+    place_id: int,
 ) -> PlaceInfo:
     """Retrieve category-specific information for a place by its ID."""
     for filename in PLACE_FILES:
@@ -118,7 +131,7 @@ def get_place_info(
 
 @router.get("/{place_id}/location", response_model=PlaceLocation)
 def get_place_location(
-    place_id: Annotated[int, PathParam(description="Place ID")],
+    place_id: int,
 ) -> PlaceLocation:
     """Retrieve the longitude and latitude of a place by its ID."""
     for filename in PLACE_FILES:
