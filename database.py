@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS travel_times (
 );
 
 CREATE TABLE IF NOT EXISTS itineraries (
-    itinerary_id INTEGER PRIMARY KEY,
+    itinerary_id INTEGER PRIMARY KEY AUTOINCREMENT,
     start_time TEXT NOT NULL,
     end_time TEXT NOT NULL,
 

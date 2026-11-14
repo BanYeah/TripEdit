@@ -15,7 +15,7 @@ dataset/
 ```
 <br>
 
-## Environments
+## Environment Setup
 
 ```bash
 conda env create -f environment.yml
@@ -25,11 +25,11 @@ conda activate trip-edit
 ```
 <br>
 
-## APIs
+## API
 
 ```bash
 python app.py
 ```
 
-The development server runs at http://127.0.0.1:8000.
-API documentation is available at http://127.0.0.1:8000/docs.
+- The development server runs at http://127.0.0.1:8000.
+- API documentation is available at http://127.0.0.1:8000/docs.

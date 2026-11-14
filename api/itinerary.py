@@ -26,7 +26,6 @@ DateTimeString = Annotated[str, AfterValidator(validate_datetime)]
 
 
 class ItineraryForm(BaseModel):
-    itinerary_id: int
     start_time: DateTimeString = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
     end_time: DateTimeString = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
 
@@ -37,21 +36,25 @@ class ItineraryForm(BaseModel):
         return self
 
 
-@router.post("/init", response_model=ItineraryForm, status_code=201)
+class Itinerary(BaseModel):
+    itinerary_id: int
+    start_time: DateTimeString = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
+    end_time: DateTimeString = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
+
+
+@router.post("/init", response_model=Itinerary, status_code=201)
 def init_itinerary(
     itinerary: ItineraryForm,
     database: Annotated[sqlite3.Connection, Depends(get_database)],
-) -> ItineraryForm:
-    """Initialize an itinerary, deleting and recreating any existing itinerary with the same ID."""
+) -> Itinerary:
+    """Create an itinerary."""
     with database:
-        database.execute(
-            "DELETE FROM itineraries WHERE itinerary_id = ?", (itinerary.itinerary_id,)
+        cursor = database.execute(
+            "INSERT INTO itineraries (start_time, end_time) VALUES (?, ?)",
+            (itinerary.start_time, itinerary.end_time),
         )
-        database.execute(
-            "INSERT INTO itineraries (itinerary_id, start_time, end_time) VALUES (?, ?, ?)",
-            (itinerary.itinerary_id, itinerary.start_time, itinerary.end_time),
-        )
-    return itinerary
+        result = Itinerary(**itinerary.model_dump(), itinerary_id=cursor.lastrowid)
+    return result
 
 
 class Segment(BaseModel):
