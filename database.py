@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS segments (
     start_time TEXT NOT NULL,
     end_time TEXT NOT NULL,
 
-    place_id TEXT,
+    place_id INTEGER,
     place_name TEXT,
     place_category TEXT,
     

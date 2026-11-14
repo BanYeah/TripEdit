@@ -1,8 +1,10 @@
+import re
 import sqlite3
+from datetime import datetime
 from typing import Annotated, Literal, Self
 
 from fastapi import APIRouter, HTTPException, Response, Depends
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, Field, ConfigDict, AfterValidator, model_validator
 
 from database import get_database
 from .place import find_place
@@ -10,10 +12,23 @@ from .place import find_place
 router = APIRouter(prefix="/itinerary", tags=["itinerary"])
 
 
+def validate_datetime(value: str) -> str:
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?", value):
+        raise ValueError("Time must use YYYY-MM-DDTHH:MM:SS format (optional fractional seconds, no timezone)")
+    
+    try:
+        return datetime.fromisoformat(value).isoformat()
+    except ValueError as error:
+        raise ValueError("Time must be a valid date and time") from error
+
+
+DateTimeString = Annotated[str, AfterValidator(validate_datetime)]
+
+
 class ItineraryForm(BaseModel):
     itinerary_id: int
-    start_time: str = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
-    end_time: str = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
+    start_time: DateTimeString = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
+    end_time: DateTimeString = Field(min_length=1, description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
 
     @model_validator(mode="after")
     def validate_time_range(self) -> Self:
@@ -42,8 +57,8 @@ def init_itinerary(
 class Segment(BaseModel):
     segment_id: int
     segment_type: Literal["STOP", "LEG"]
-    start_time: str = Field(description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
-    end_time: str = Field(description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
+    start_time: DateTimeString = Field(description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
+    end_time: DateTimeString = Field(description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
     place_id: int | None
     place_name: str | None
     place_category: Literal["transport", "accommodation", "attraction", "restaurant", "cafe"] | None
@@ -53,10 +68,10 @@ class Segment(BaseModel):
 class SegmentForm(BaseModel):
     itinerary_id: int
     segment_type: Literal["STOP", "LEG"]
-    start_time: str = Field(description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
-    end_time: str = Field(description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
-    place_id: int | None
-    transport_mode: Literal["WALK", "TRANSIT"] | None
+    start_time: DateTimeString = Field(description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
+    end_time: DateTimeString = Field(description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
+    place_id: int | None = None
+    transport_mode: Literal["WALK", "TRANSIT"] | None = None
 
     @model_validator(mode="after")
     def validate_segment(self) -> Self:
@@ -126,6 +141,12 @@ def get_itinerary(
     database: Annotated[sqlite3.Connection, Depends(get_database)],
 ) -> list[Segment]:
     """Retrieve itinerary segments sorted by start time in ascending order."""
+    itinerary = database.execute(
+        "SELECT 1 FROM itineraries WHERE itinerary_id = ?", (itinerary_id,)
+    ).fetchone()
+    if itinerary is None:
+        raise HTTPException(status_code=404, detail="Itinerary not found")
+
     rows = database.execute(
         """SELECT segment_id, segment_type, start_time, end_time,
                   place_id, place_name, place_category, transport_mode
@@ -138,8 +159,8 @@ def get_itinerary(
 
 
 class SegmentPatchForm(BaseModel):
-    start_time: str = Field(description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
-    end_time: str = Field(description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
+    start_time: DateTimeString = Field(description="in ISO 8601 format", examples=["2026-11-14T09:00:00"])
+    end_time: DateTimeString = Field(description="in ISO 8601 format", examples=["2026-11-16T18:00:00"])
 
     model_config = ConfigDict(extra="forbid")
 
