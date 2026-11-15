@@ -3,9 +3,10 @@ __pycache__/
 
 .vscode/
 
-/dataset/*.csv
-/dataset/gtfs
-/dataset/osm
+dataset/*.csv
+dataset/gtfs
+dataset/osm
 
 .env
+*.jsonl
 *.sqlite3

@@ -33,3 +33,11 @@ python app.py
 
 - The development server runs at http://127.0.0.1:8000.
 - API documentation is available at http://127.0.0.1:8000/docs.
+<br>
+
+## Benchmark
+```bash
+python evaluate.py
+```
+
+- Results are saved to `result.jsonl`.

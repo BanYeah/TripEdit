@@ -9,5 +9,8 @@ dependencies:
   - pydantic
   - pip
   - pip:
+      - openai
+      - python-dotenv
       - requests
+      - tqdm
       - uvicorn
