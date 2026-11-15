@@ -12,7 +12,9 @@ def validate(scenario_num, turn_num, itinerary_id, request_status):
             raise ValueError(f"Unsupported scenario: {scenario_num}") from error
         raise
 
-    success, reason = validate_common(itinerary_id)
+    override_provider = getattr(module, "travel_time_overrides", None)
+    overrides = override_provider(turn_num) if override_provider is not None else None
+    success, reason = validate_common(itinerary_id, travel_time_overrides=overrides)
     if not success:
         return success, reason
 
@@ -20,7 +22,7 @@ def validate(scenario_num, turn_num, itinerary_id, request_status):
     return validator(turn_num, itinerary_id, request_status)
 
 
-def validate_common(itinerary_id):
+def validate_common(itinerary_id, *, travel_time_overrides=None):
     database = connect()
 
     try:
@@ -43,24 +45,28 @@ def validate_common(itinerary_id):
             expected = "STOP" if index % 2 == 0 else "LEG"
             if segment["segment_type"] != expected:
                 return False, "Segments must alternate STOP and LEG."
+        
+        if segments[-1]["segment_type"] != "STOP":
+            return False, "Itinerary must end with a STOP."
 
         for index in range(1, len(segments), 2):
             leg = segments[index]
             origin = segments[index - 1]["place_id"]
             destination = segments[index + 1]["place_id"]
 
-            travel_time = database.execute(
-                "SELECT walk_minutes, transit_minutes FROM travel_times "
-                "WHERE origin_id = ? AND destination_id = ?",
-                (origin, destination),
-            ).fetchone()
-
             mode = leg["transport_mode"]
-            minutes = (
-                travel_time[f"{mode.lower()}_minutes"]
-                if travel_time is not None
-                else None
-            )
+            minutes = (travel_time_overrides or {}).get((origin, destination, mode))
+            if minutes is None:
+                travel_time = database.execute(
+                    "SELECT walk_minutes, transit_minutes FROM travel_times "
+                    "WHERE origin_id = ? AND destination_id = ?",
+                    (origin, destination),
+                ).fetchone()
+                minutes = (
+                    travel_time[f"{mode.lower()}_minutes"]
+                    if travel_time is not None
+                    else None
+                )
             if minutes is None:
                 return False, f"Travel time unavailable for LEG {leg['segment_id']}."
 

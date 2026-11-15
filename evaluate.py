@@ -114,14 +114,17 @@ def evaluate(
                 if request_status is not None:
                     break
 
+            end = time.perf_counter()
+            elapsed_minutes = round((end - start) / 60, 2)
+
             if itinerary_id is None:
                 raise ValueError("Itinerary has not been initialized")
 
             if request_status is None:
+                error = f"No final response within {max_rounds} model requests"
+                results.append({"turn": turn_num, "success": False, "reason": error, "response_time": elapsed_minutes})
+                break
                 raise RuntimeError(f"No final response within {max_rounds} model requests")
-
-            end = time.perf_counter()
-            elapsed_minutes = round((end - start) / 60, 2)
 
             # Validate the itinerary
             success, reason = validate(scenario_num, turn_num, itinerary_id, request_status)
@@ -214,5 +217,5 @@ if __name__ == "__main__":
             completed_scenarios.add(scenario_num)
 
     process_bar.close()
-    
+
     print_metrics(RESULT_PATH)
